@@ -1,10 +1,11 @@
 [package]
 name = "telegrax"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 description = "Telegram Bot APIs"
 license = "Apache-2.0"
 readme = "readme.md"
+repository = "https://github.com/kevin-leptons/telegrax"
 
 [dependencies]
 ureq = { version = "2.10.1", features = ["json"] }
