@@ -3,6 +3,8 @@ name = "telegrax"
 version = "0.1.0"
 edition = "2021"
 description = "Telegram Bot APIs"
+license = "Apache-2.0"
+
 
 [dependencies]
 ureq = { version = "2.10.1", features = ["json"] }
