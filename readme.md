@@ -6,8 +6,8 @@ API for sending message from a bot to a chat.
 ## Quickstart
 
 For a quickstart, see [examples](examples). For installation from package
-repository, see [crate.io](https://crates.io/crates/telegrax). For API
-references, see [doc.rs](https://docs.rs/ureq).
+repository, see [crates.io](https://crates.io/crates/telegrax). For API
+references, see [doc.rs](https://docs.rs/telegrax).
 
 ## Test
 
