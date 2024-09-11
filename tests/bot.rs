@@ -14,7 +14,7 @@ fn send_message() {
 fn send_image() {
     let (config, bot) = create_services();
     let image = "https://static1.srcdn.com/wordpress/wp-content/uploads/2023/02/hulk-in-avengers-age-of-ultron.jpg";
-    let content = "Hulk is here";
+    let content = "*Hulk is here*\n\nAhhhhh...";
     bot.send_image(config.telegram_chat_identity(), image, content)
         .unwrap();
 }

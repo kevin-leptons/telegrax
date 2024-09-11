@@ -24,7 +24,8 @@ impl Bot {
         let url = format!("{}/bot{}/sendMessage", ENDPOINT, self.token);
         let request_body = json!({
             "chat_id": chat_identity,
-            "text": content
+            "text": content,
+            "parse_mode": "Markdown"
         });
         ureq::post(&url)
             .set("content-type", "application/json")
@@ -39,7 +40,8 @@ impl Bot {
         let request_body = json!({
             "chat_id": chat_identity,
             "caption": caption,
-            "photo": image_url
+            "photo": image_url,
+            "parse_mode": "Markdown"
         });
         ureq::post(&endpoint)
             .set("content-type", "application/json")
