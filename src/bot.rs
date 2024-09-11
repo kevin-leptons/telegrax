@@ -33,4 +33,19 @@ impl Bot {
             .map_err(Error::from_http_api_error)?;
         Ok(())
     }
+
+    pub fn send_image(&self, chat_identity: &str, image_url: &str, caption: &str) -> Result<()> {
+        let endpoint = format!("{}/bot{}/sendPhoto", ENDPOINT, self.token);
+        let request_body = json!({
+            "chat_id": chat_identity,
+            "caption": caption,
+            "photo": image_url
+        });
+        ureq::post(&endpoint)
+            .set("content-type", "application/json")
+            .set("accept", "application/json")
+            .send_json(request_body)
+            .map_err(Error::from_http_api_error)?;
+        Ok(())
+    }
 }
