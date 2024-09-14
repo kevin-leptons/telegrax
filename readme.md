@@ -1,7 +1,7 @@
 # Telegrax
 
-Telegram Application Programming Interfaces (APIs). At the moment, there is only
-API for sending message from a bot to a chat.
+Telegram Application Programming Interfaces (APIs). At the moment, there are few
+supported APIs.
 
 ## Quickstart
 
@@ -15,6 +15,7 @@ references, see [doc.rs](https://docs.rs/telegrax).
 # Create a proper configuration.
 cp config.test.example.json config.test.json
 vim config.test.json
+chmod 600 config.test.json
 
 # Run all tests.
 cargo test

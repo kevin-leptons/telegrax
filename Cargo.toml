@@ -1,6 +1,6 @@
 [package]
 name = "telegrax"
-version = "0.3.0"
+version = "0.4.0"
 edition = "2021"
 description = "Telegram Bot APIs"
 license = "Apache-2.0"
@@ -13,6 +13,4 @@ serde = { version = "1.0.187", features = ["derive"] }
 serde_json = "1.0.128"
 
 [dev-dependencies]
-libc = "0.2.149"
-serde_path_to_error = "0.1.16"
-regex = "1.10.6"
+luci = "0.1.0"

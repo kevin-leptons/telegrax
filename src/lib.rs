@@ -1,5 +1,5 @@
-//! Telegram Application Programming Interfaces (APIs). At the moment, there is
-//! only API for sending message from a bot to a chat.
+//! Telegram Application Programming Interfaces (APIs). At the moment, there are
+//! few supported APIs.
 //!
 //! ```no_run
 #![doc = include_str!("../examples/send_message.rs")]

@@ -42,7 +42,7 @@ impl Error {
                 };
                 return Self {
                     code: ErrorCode::Endpoint,
-                    description: format!("status={}; description={}", status, body.description),
+                    description: format!("status={}; {}", status, body.description),
                 };
             }
             ureq::Error::Transport(transport) => Self {
