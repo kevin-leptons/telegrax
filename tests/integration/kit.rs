@@ -1,4 +1,6 @@
 use serde::Deserialize;
+use std::thread::sleep;
+use std::time::Duration;
 use std::{path::PathBuf, str::FromStr};
 use telegrax::bot::Bot;
 
@@ -40,6 +42,10 @@ pub fn create_context() -> Context {
     };
     let bot = Bot::new(bot_config);
     Context { config, bot }
+}
+
+pub fn sleep_after_sending_message() {
+    sleep(Duration::from_secs(3));
 }
 
 impl Context {

@@ -1,5 +1,6 @@
-use crate::error::Error;
-use crate::result::Result;
+//! Send message as a bot.
+
+use crate::result::{Error, Result};
 use serde::Serialize;
 
 static ENDPOINT: &str = "https://api.telegram.org";
@@ -14,9 +15,9 @@ pub struct Configuration {
     pub token: String,
 }
 
+#[derive(Default)]
 pub struct SendMessageOptions {
-    /// Mode for parsing entities in the message text. See formatting options
-    /// for more details.
+    /// Mode for parsing entities in the message text.
     pub parse_mode: Option<ParseMode>,
 
     /// Link preview generation options for the message.
@@ -38,7 +39,7 @@ pub struct SendMessageOptions {
     pub protect_content: Option<bool>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Default)]
 pub struct LinkPreviewOptions {
     /// True, if the link preview is disabled.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -116,16 +117,16 @@ struct SendMessage {
 
 #[derive(Serialize)]
 struct SendPhoto {
-    ///	Unique identifier for the target chat or username of the target
-    ///	channel (in the format @channelusername).
+    /// Unique identifier for the target chat or username of the target
+    /// channel (in the format @channelusername).
     pub chat_id: String,
 
-    ///	Photo to send. Pass a file_id as String to send a photo that exists on
-    ///	the Telegram servers (recommended), pass an HTTP URL as a String for
-    ///	Telegram to get a photo from the Internet, or upload a new photo using
-    ///	multipart/form-data. The photo must be at most 10 MB in size. The
-    ///	photo's width and height must not exceed 10000 in total. Width and
-    ///	height ratio must be at most 20. More information on Sending Files.
+    /// Photo to send. Pass a file_id as String to send a photo that exists on
+    /// the Telegram servers (recommended), pass an HTTP URL as a String for
+    /// Telegram to get a photo from the Internet, or upload a new photo using
+    /// multipart/form-data. The photo must be at most 10 MB in size. The
+    /// photo's width and height must not exceed 10000 in total. Width and
+    /// height ratio must be at most 20. More information on Sending Files.
     pub photo: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -156,38 +157,39 @@ struct SendPhoto {
     pub message_effect_id: Option<String>,
 }
 
+#[derive(Default)]
 pub struct SendPhotoOptions {
-    ///	Photo caption (may also be used when resending photos by file_id),
-    ///	0-1024 characters after entities parsing.
+    /// Photo caption (may also be used when resending photos by file_id),
+    /// 0-1024 characters after entities parsing.
     pub caption: Option<String>,
 
-    ///	Unique identifier of the business connection on behalf of which the
-    ///	message will be sent.
+    /// Unique identifier of the business connection on behalf of which the
+    /// message will be sent.
     pub business_connection_id: Option<String>,
 
-    ///	Unique identifier for the target message thread (topic) of the forum;
-    ///	for forum supergroups only.
+    /// Unique identifier for the target message thread (topic) of the forum;
+    /// for forum supergroups only.
     pub message_thread_id: Option<u64>,
 
-    ///	Mode for parsing entities in the photo caption. See formatting options
-    ///	for more details.
+    /// Mode for parsing entities in the photo caption. See formatting options
+    /// for more details.
     pub parse_mode: Option<ParseMode>,
 
-    ///	Pass True, if the caption must be shown above the message media.
+    /// Pass True, if the caption must be shown above the message media.
     pub show_caption_above_media: Option<bool>,
 
-    ///	Pass True if the photo needs to be covered with a spoiler animation.
+    /// Pass True if the photo needs to be covered with a spoiler animation.
     pub has_spoiler: Option<bool>,
 
-    ///	Sends the message silently. Users will receive a notification with no
-    ///	sound..
+    /// Sends the message silently. Users will receive a notification with no
+    /// sound..
     pub disable_notification: Option<bool>,
 
-    ///	Protects the contents of the sent message from forwarding and saving.
+    /// Protects the contents of the sent message from forwarding and saving.
     pub protect_content: Option<bool>,
 
-    ///	Unique identifier of the message effect to be added to the message; for
-    ///	private chats only.
+    /// Unique identifier of the message effect to be added to the message; for
+    /// private chats only.
     pub message_effect_id: Option<String>,
 }
 
@@ -200,10 +202,12 @@ impl Bot {
 
     /// # Arguments
     ///
-    ///	* `chat_identity` - Unique identifier for the target chat or username of
-    ///	the target channel (in the format @channelusername).
-    /// * `text`: Text of the message to be sent, 1-4096 characters after
-    /// entities parsing.
+    /// `chat_identity`. Unique identifier for the target chat or username of
+    /// the target channel (in the format @channelusername).
+    ///
+    /// `text`. Content to be sent. It must be not empty and less than 4096
+    ///  characters after parsing. The parsing mode is specified by
+    ///  [SendMessageOptions::parse_mode].
     pub fn send_message(
         &self,
         chat_identity: &str,
@@ -230,15 +234,16 @@ impl Bot {
 
     /// # Arguments
     ///
-    ///	* `chat_identity` - Unique identifier for the target chat or username of
-    ///	the target channel (in the format @channelusername).
-    ///	* `photo` - Pass a file_id as String to send a photo that exists on the
-    ///	Telegram servers (recommended), pass an HTTP URL as a String for
-    ///	Telegram to get a photo from the Internet, or upload a new photo using
-    ///	multipart/form-data. The photo must be at most 10 MB in size. The
-    ///	photo's width and height must not exceed 10000 in total. Width and
-    ///	height ratio must be at most 20. More information on [Sending
-    ///	Files](https://core.telegram.org/bots/api#sending-files).
+    /// `chat_identity`. Unique identifier for the target chat or username of
+    /// the target channel (in the format @channelusername).
+    ///
+    /// `photo`. Pass a *file_id* to send a photo that exists on the Telegram
+    /// servers (recommended). Pass an HTTP URL to get a photo from the
+    /// Internet. Or upload a new photo using *multipart/form-data*. The photo
+    /// must be at most 10 MB in size. The photo's width and height must not
+    /// exceed 10000 in total. Width and height ratio must be at most 20. More
+    /// information on [Sending
+    /// Files](https://core.telegram.org/bots/api#sending-files).
     pub fn send_photo(
         &self,
         chat_identity: &str,
@@ -264,46 +269,5 @@ impl Bot {
             .send_json(message)
             .map_err(Error::from_http_api_error)?;
         Ok(())
-    }
-}
-
-impl Default for LinkPreviewOptions {
-    fn default() -> Self {
-        Self {
-            is_disabled: None,
-            prefer_large_media: None,
-            prefer_small_media: None,
-            show_above_text: None,
-            url: None,
-        }
-    }
-}
-
-impl Default for SendMessageOptions {
-    fn default() -> Self {
-        Self {
-            parse_mode: None,
-            business_connection_id: None,
-            disable_notification: None,
-            link_preview_options: None,
-            message_thread_id: None,
-            protect_content: None,
-        }
-    }
-}
-
-impl Default for SendPhotoOptions {
-    fn default() -> Self {
-        Self {
-            caption: None,
-            business_connection_id: None,
-            message_thread_id: None,
-            parse_mode: None,
-            show_caption_above_media: None,
-            has_spoiler: None,
-            disable_notification: None,
-            protect_content: None,
-            message_effect_id: None,
-        }
     }
 }

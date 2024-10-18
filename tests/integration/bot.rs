@@ -1,22 +1,25 @@
-use kit::create_context;
+use crate::kit::{create_context, sleep_after_sending_message};
+use kix::Result;
+use serial_test::serial;
 use telegrax::bot::{LinkPreviewOptions, ParseMode, SendMessageOptions, SendPhotoOptions};
-
-mod kit;
+use telegrax::result::Error;
 
 #[test]
-fn send_message_with_default_options() {
+#[serial]
+fn send_message_with_default_options() -> Result<()> {
     let context = create_context();
     let chat_id = context.config().telegram_chat_identity();
     let content = "Hulk is here. Ahhh...";
     let options = SendMessageOptions::default();
-    context
-        .bot()
-        .send_message(chat_id, content, options)
-        .unwrap();
+    let result = context.bot().send_message(chat_id, content, options);
+    sleep_after_sending_message();
+    result?;
+    Ok(())
 }
 
 #[test]
-fn send_message_with_disabled_notification() {
+#[serial]
+fn send_message_with_disabled_notification() -> Result<()> {
     let context = create_context();
     let chat_id = context.config().telegram_chat_identity();
     let content = "Hulk is here. Ahhh...";
@@ -24,14 +27,15 @@ fn send_message_with_disabled_notification() {
         disable_notification: Some(true),
         ..Default::default()
     };
-    context
-        .bot()
-        .send_message(chat_id, content, options)
-        .unwrap();
+    let result = context.bot().send_message(chat_id, content, options);
+    sleep_after_sending_message();
+    result?;
+    Ok(())
 }
 
 #[test]
-fn send_message_with_disabled_link_preview() {
+#[serial]
+fn send_message_with_disabled_link_preview() -> Result<()> {
     let context = create_context();
     let chat_id = context.config().telegram_chat_identity();
     let content = "Hulk is here. Ahhh...";
@@ -43,14 +47,14 @@ fn send_message_with_disabled_link_preview() {
         link_preview_options: Some(link_preview_options),
         ..Default::default()
     };
-    context
-        .bot()
-        .send_message(chat_id, content, options)
-        .unwrap();
+    let result = context.bot().send_message(chat_id, content, options);
+    result?;
+    Ok(())
 }
 
 #[test]
-fn send_message_with_parse_mode_markdown() {
+#[serial]
+fn send_message_with_parse_mode_markdown() -> Result<()> {
     let context = create_context();
     let chat_id = context.config().telegram_chat_identity();
     let content = "*Hulk is here*. Ahhh...";
@@ -58,14 +62,15 @@ fn send_message_with_parse_mode_markdown() {
         parse_mode: Some(ParseMode::Markdown),
         ..Default::default()
     };
-    context
-        .bot()
-        .send_message(chat_id, content, options)
-        .unwrap();
+    let result = context.bot().send_message(chat_id, content, options);
+    sleep_after_sending_message();
+    result?;
+    Ok(())
 }
 
 #[test]
-fn send_photo_with_caption() {
+#[serial]
+fn send_photo_with_caption() -> Result<()> {
     let context = create_context();
     let chat_id = context.config().telegram_chat_identity();
     let photo = "https://static1.srcdn.com/wordpress/wp-content/uploads/2023/02/hulk-in-avengers-age-of-ultron.jpg";
@@ -75,5 +80,25 @@ fn send_photo_with_caption() {
         parse_mode: Some(ParseMode::Markdown),
         ..Default::default()
     };
-    context.bot().send_photo(chat_id, photo, options).unwrap();
+    let result = context.bot().send_photo(chat_id, photo, options);
+    sleep_after_sending_message();
+    result?;
+    Ok(())
+}
+
+#[test]
+#[serial]
+fn send_message_error() {
+    let context = create_context();
+    let chat_id = "NOT_EXISTED_CHAT_ID";
+    let content = "Hello there.";
+    let options = SendMessageOptions::default();
+    let descrition = match context.bot().send_message(chat_id, content, options) {
+        Ok(_) => panic!("Send message does not return an error"),
+        Err(e) => match e {
+            Error::Endpoint { description } => description,
+            _ => panic!("Send message return not matched error"),
+        },
+    };
+    assert_eq!(descrition, "Bad Request: chat not found");
 }

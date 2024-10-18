@@ -4,3 +4,4 @@
 Cargo.lock
 config.*
 !config.test.example.json
+!.cargo/config.toml

@@ -1,7 +1,7 @@
 //! Endpoint's rate limits.
 //!
-//! These limits are relative. A limit may go a little bit higher but eventually
-//! results in error [Error::RateLimit]. For more details, see [Broadcasting to
+//! These limits are bound to a bot token. A limit may go a little bit higher
+//! but eventually results in error. For more details, see [Broadcasting to
 //! users](https://core.telegram.org/bots/faq#broadcasting-to-users).
 
 /// How many messages are send to a chat per second.
