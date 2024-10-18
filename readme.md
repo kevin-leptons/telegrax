@@ -1,7 +1,9 @@
 # Telegrax
 
-Telegram Application Programming Interfaces (APIs). At the moment, there are few
-supported APIs.
+Send messages as a Telegram bot.
+
+The library focuses on sending messages for now, at least in version 1. Later,
+other functions may be added if needed.
 
 ## Quickstart
 
@@ -19,4 +21,8 @@ chmod 600 config.test.json
 
 # Run all tests.
 cargo test
+
+# Validate lints.
+rustup component add clippy
+cargo clippy
 ```
